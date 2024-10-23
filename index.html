@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Red Baron</title>
+    <link rel="icon" href="images\icon.png" type="image/x-icon" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Arial", sans-serif;
+        background: #000;
+        color: #fff;
+        overflow-x: hidden;
+      }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 10;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        color: #e63946;
+        text-transform: uppercase;
+        letter-spacing: 0.1rem;
+      }
+
+      .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 20px;
+      }
+
+      .nav-links li {
+        text-transform: uppercase;
+      }
+
+      .nav-links a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 1rem;
+        transition: color 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        color: #e63946;
+      }
+
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .hamburger div {
+        width: 35px;
+        height: 6px;
+        background-color: #fff;
+        margin: 5px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-links {
+        position: fixed;
+        top: 60px;
+        right: -100%;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.9);
+        width: 100%;
+        height: 100vh;
+        align-items: center;
+        justify-content: center;
+        transition: right 0.5s ease;
+      }
+
+      .nav-links.active {
+        right: 0;
+      }
+
+      .main1 {
+        height: 100vh;
+        background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.3)),
+          url("images/Car2.jpg") no-repeat center center/cover;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding-top: 60px;
+        animation: fadeIn 1.5s ease-out;
+      }
+
+      .main1 h1 {
+        font-size: 4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: fadeIn 2s ease-out;
+        color: #d10000;
+        position: relative;
+      }
+
+      .main1 h1 span {
+        position: relative;
+        display: inline-block;
+        margin: 0 0.5rem;
+      }
+
+      .main1 h2 {
+        font-size: 1.5rem;
+        letter-spacing: 0.3rem;
+        margin-top: 20px;
+        animation: slideUp 1.5s ease-out;
+        color: #f1faee;
+      }
+
+      .btn {
+        margin-top: 40px;
+        padding: 15px 30px;
+        border: 2px solid #e63946;
+        background: none;
+        color: #d10000;
+        font-size: 1.2rem;
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        transition: color 0.3s ease;
+        z-index: 1;
+      }
+
+      .btn::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(230, 57, 70, 0.3);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        z-index: -1;
+      }
+
+      .btn:hover::before {
+        transform: translateX(0);
+      }
+
+      .btn:hover {
+        color: #fff;
+      }
+
+      .car-wheel {
+        width: 55px;
+        height: 55px;
+        border-radius: 50%;
+        overflow: hidden;
+        box-shadow: 3px 3px 4px rgba(255, 0, 0, 1),
+          4px 4px 8px rgba(224, 95, 95, 0.8);
+        animation: roll 3s infinite ease-in-out;
+      }
+
+      .car-wheel img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+
+      .div3 {
+        height: 100vh;
+        background: url("images/Car2.jpg") no-repeat center center/cover;
+        background-attachment: fixed;
+      }
+
+      .about {
+        padding: 60px 20px;
+        background-color: #1d3557;
+        text-align: center;
+      }
+
+      .about h3 {
+        font-size: 2.5rem;
+        color: #f1faee;
+      }
+
+      .about p {
+        max-width: 700px;
+        margin: 20px auto;
+        font-size: 1.2rem;
+        color: #a8dadc;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideUp {
+        from {
+          transform: translateY(100%);
+        }
+        to {
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes roll {
+        0% {
+          transform: translateY(0%);
+        }
+        50% {
+          transform: translateY(-100%);
+        }
+        100% {
+          transform: translateY(0%);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main1 h1 {
+          font-size: 2.5rem;
+          letter-spacing: 0.3rem;
+        }
+
+        .main1 h2 {
+          font-size: 1.2rem;
+        }
+
+        .car-wheel {
+          width: 45px;
+          height: 45px;
+        }
+
+        .btn {
+          padding: 10px 20px;
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <div class="logo">Red Baron</div>
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="OurJourney.html">OurJourney</a></li>
+        <li><a href="1_Team.html">Team</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="Blog.html">Blogs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="hamburger" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+    </nav>
+
+    <section class="main1" id="home">
+      <h1>
+        Team Red Bar<span class="car-wheel"
+          ><img src="images/CarWheel.png" alt="CarWheel" /></span
+        >n
+      </h1>
+      <h2>Defying Gravity, Engineering Excellence</h2>
+      <button class="btn">Join Us</button>
+    </section>
+
+    <div class="div3"></div>
+
+    <section class="about" id="about">
+      <h3>About Team Red Baron</h3>
+      <p>
+        Team Red Baron is a group of undergraduate students from Pimpri
+        Chinchwad College of Engineering (PCCOE), Pune. Operating under PCCOE
+        Motorsports, we design and develop an Electric All-Terrain Vehicle
+        participating in eBaja SAE India. Previously designing and manufacturing
+        combustion ATVs, we have participated in events such as Baja SAE India,
+        Enduro Student India, Mega ATV Championship, and Baja SAE International.
+        We design, manufacture, test, and race our ATV with only one aim in
+        mind: Victory. We believe, ” We never lose. We either Win or Learn.”
+      </p>
+    </section>
+
+    <script>
+      function toggleMenu() {
+        const navLinks = document.querySelector(".nav-links");
+        navLinks.classList.toggle("active");
+      }
+    </script>
+  </body>
+</html>
