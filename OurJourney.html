@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images\icon.png" type="image/x-icon" />
+    <title>Half Visible Rotating Ferris Wheel</title>
+    <style>
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: auto;
+        background-color: rgb(31, 30, 30);
+        overflow: auto;
+        color: rgb(225, 222, 210);
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(to right, #5b0b02, #1c0000);
+        padding: 15px 20px;
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        z-index: 1000;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+      }
+
+      .navbar-logo {
+        color: #ffffff;
+        font-size: 1.8em;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        margin-left: 30px;
+      }
+
+      .navbar-links {
+        list-style: none;
+        display: flex;
+        margin: 15px;
+        padding: 0;
+      }
+
+      .navbar-links li {
+        margin: 0 20px;
+      }
+
+      .navbar-links a {
+        color: #ffffff;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        padding: 5px 0;
+        transition: color 0.3s;
+      }
+
+      .navbar-links a:hover {
+        color: #ffcc00;
+      }
+
+      .navbar-links a::after {
+        content: "";
+        display: block;
+        height: 3px;
+        background: #ffcc00;
+        transition: width 0.3s, left 0.3s;
+        width: 0;
+        left: 50%;
+        bottom: -5px;
+        position: absolute;
+      }
+
+      .navbar-links a:hover::after {
+        width: 100%;
+        left: 0;
+      }
+
+      .navbar-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .bar {
+        height: 3px;
+        width: 25px;
+        background-color: #ffffff;
+        margin: 3px 0;
+        transition: all 0.3s;
+      }
+
+      @media (max-width: 768px) {
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          background: linear-gradient(
+            to right,
+            rgba(247, 148, 148, 0.9),
+            rgba(122, 18, 18, 0.9)
+          );
+          border-radius: 8px;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          z-index: 999;
+        }
+
+        .navbar-links.active {
+          display: flex;
+        }
+
+        .navbar-toggle {
+          display: flex;
+        }
+      }
+
+      .wheel-container {
+        position: fixed;
+        width: 60vw;
+        height: 60vw;
+        border-radius: 50%;
+        right: -30vw;
+        animation: rotateWheel 40s linear infinite;
+        top: 10%;
+        transform: translateY(-50%);
+        opacity: 0.7;
+      }
+
+      .wheel-container .timeline-item {
+        transform-origin: center;
+        animation: counterRotate 40s linear infinite;
+      }
+
+      @keyframes counterRotate {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(-360deg);
+        }
+      }
+
+      .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+        filter: brightness(1) contrast(1.3);
+      }
+
+      .timeline-item {
+        position: absolute;
+        width: 20%;
+        height: 15%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transform-origin: center;
+        border-radius: 30% /15%;
+        cursor: pointer;
+        border: 2px solid rgba(126, 13, 13, 0.8);
+        box-shadow: 0 4px 10px rgba(126, 13, 13, 0.6) inset;
+        background: rgba(225, 222, 210, 0.9);
+        opacity: 1;
+      }
+
+      .item-1 {
+        top: 50%;
+        left: -10%;
+        transform: translate(-50%, -50%);
+        filter: brightness(2);
+      }
+      .item-2 {
+        top: -10%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        filter: brightness(0.7) contrast(3);
+      }
+      .item-3 {
+        top: 50%;
+        right: -10%;
+        transform: translate(50%, -50%) rotate(180deg);
+        animation-delay: 1s;
+      }
+      .item-4 {
+        bottom: -10%;
+        left: 50%;
+        transform: translate(-50%, 50%);
+      }
+
+      .timeline-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      @keyframes rotateWheel {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .heading-container {
+        display: flex;
+        justify-content: flex-start;
+        width: 100%;
+      }
+
+      h1 {
+        font-size: 3em;
+        font-weight: bolder;
+        text-align: right;
+        background: linear-gradient(to bottom left, #fe5d4b, #3f0101);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin: 20px 0;
+        animation: gradientShift 5s ease infinite,
+          glowPulse 3s ease-in-out infinite;
+        letter-spacing: 2px;
+        padding: 0.5%;
+        box-shadow: inset 0 0 10px rgba(139, 0, 0, 0.6),
+          0 0 10px rgba(139, 0, 0, 0.7);
+      }
+
+      @media (max-width: 768px) {
+        .wheel-container {
+          width: 80vw;
+          height: 80vw;
+          right: -40vw;
+        }
+        h1 {
+          font-size: 2em;
+        }
+      }
+
+      .time-container {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 400px;
+        margin: 130px 0 0 -50px;
+      }
+
+      .backbone {
+        width: 5px;
+        height: 700px;
+        background: linear-gradient(to bottom, #f8faf8, #f52323, rgb(47, 1, 1));
+        position: absolute;
+        left: 80px;
+        top: 10%;
+      }
+
+      .times {
+        max-width: 200px;
+        width: 100%;
+        height: 150px;
+        background-color: #fff;
+        border: 2px solid #7a0505;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        transition: background-color 0.3s, box-shadow 0.3s;
+        padding: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+        font-weight: bold;
+        color: black;
+      }
+
+      .times:hover {
+        background: linear-gradient(to bottom, rgb(255, 34, 104), white);
+
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      .time1-img {
+        width: 80%;
+        height: 60%;
+        margin-bottom: 10px;
+      }
+
+      .cable {
+        width: 50px;
+        height: 2px;
+        background: linear-gradient(to right, rgb(110, 6, 6), white);
+        position: absolute;
+      }
+
+      .time1 {
+        top: 20px;
+        left: 130px;
+      }
+
+      .time2 {
+        top: 200px;
+        left: -160px;
+      }
+
+      .time3 {
+        top: 380px;
+        left: 130px;
+      }
+
+      .time4 {
+        top: 560px;
+        left: -160px;
+      }
+
+      .cable1 {
+        top: 20px;
+        left: 80px;
+      }
+
+      .cable2 {
+        top: 200px;
+        left: 30px;
+      }
+
+      .cable3 {
+        top: 380px;
+        left: 80px;
+      }
+
+      .cable4 {
+        top: 560px;
+        left: 30px;
+      }
+
+      .text-below {
+        position: absolute;
+        top: 640px;
+        text-align: center;
+        width: 100%;
+      }
+
+      @media (max-width: 500px) {
+        .time-container {
+          transform: scale(0.8);
+          margin: 0;
+        }
+
+        .backbone {
+          height: 700px;
+        }
+
+        .text-below {
+          top: 540px;
+        }
+      }
+
+      @media (max-width: 400px) {
+        .time-container {
+          transform: scale(0.7);
+          margin: 0;
+        }
+
+        .backbone {
+          height: 460px;
+        }
+
+        .text-below {
+          top: 480px;
+        }
+      }
+      .rest {
+        margin-top: 1200px;
+        font-size: 1.2em;
+        color: rgb(83, 4, 4);
+        text-align: left;
+        display: flex;
+        position: absolute;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+        max-width: 500px;
+        left: 10%;
+      }
+
+      @media (max-width: 600px) {
+        .rest {
+          margin-top: 1000px;
+          max-width: 80%;
+          margin-left: 0;
+        }
+      }
+
+      .more {
+        font-weight: normal;
+        color: rgb(61, 60, 60);
+        margin: 0;
+        display: inline-block;
+        animation: contractRelax 1s infinite;
+        cursor: pointer;
+      }
+
+      @keyframes contractRelax {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(0.95);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .time-card {
+        background-color: #fff;
+        border-radius: 10px;
+        border: rgb(121, 3, 3) solid 2px;
+        box-shadow: 0 6px 10px rgba(249, 248, 248, 0.2);
+        width: 90%;
+        margin: 10px;
+        padding: 15px;
+        transition: transform 0.3s, box-shadow 0.3s;
+      }
+
+      .time-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      }
+
+      h2 {
+        color: #5b0b02;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-logo">Red Baron</div>
+      <ul class="navbar-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="#">OurJourney</a></li>
+        <li><a href="1_Team.html">Team</a></li>
+        <li><a href="Blog.html">Blogs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-toggle" id="navbar-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
+
+    <div class="wheel-container">
+      <img src="images/wheel3.png" alt="Ferris Wheel" class="wheel" />
+      <div class="timeline-item item-1">
+        <img src="images/hist1.png" alt="Timeline 1" />
+      </div>
+      <div class="timeline-item item-2">
+        <img src="images/hist2.png" alt="Timeline 2" />
+      </div>
+      <div class="timeline-item item-3">
+        <img src="images/hist3.png" alt="Timeline 3" />
+      </div>
+      <div class="timeline-item item-4">
+        <img src="images/hist4.png" alt="Timeline 4" />
+      </div>
+    </div>
+
+    <div class="heading-container">
+      <h1>The Legacy of Red Baron at PCCOE</h1>
+    </div>
+
+    <div class="time-container">
+      <h2 style="color: white">Timeline</h2>
+      <br /><br />
+      <div class="backbone"></div>
+      <div class="times time1">
+        <img src="images/hist1.png" alt="time 1" class="time1-img" />
+        <p>Albatros 1.0</p>
+        <p class="more">
+          <a href="#time1_info" class="more"><<-more info->></a>
+        </p>
+      </div>
+      <div class="cable cable1"></div>
+      <div class="times time2">
+        <img src="images/hist2.png" alt="time 2" class="time1-img" />
+        <p>Albatros 2.0</p>
+        <p class="more">
+          <a href="#time2_info" class="more"><<-more info->></a>
+        </p>
+      </div>
+      <div class="cable cable2"></div>
+      <div class="times time3">
+        <img src="images/hist3.png" alt="time 3" class="time1-img" />
+        <p>Albatros 3.0</p>
+        <p class="more">
+          <a href="#time3_info" class="more"><<-more info->></a>
+        </p>
+      </div>
+      <div class="cable cable3"></div>
+      <div class="times time4">
+        <img src="images/hist4.png" alt="time 4" class="time1-img" />
+        <p>Albatros X</p>
+        <p class="more">
+          <a href="#time4_info" class="more"><<-more info->></a>
+        </p>
+      </div>
+      <div class="cable cable4"></div>
+      <div class="text-below"><b>Off-Road Adventures</b></div>
+    </div>
+    <div class="rest">
+      <div id="time1_info" class="time-card">
+        <h3>Albatros 1.0</h3>
+        The journey of Team Red Baron began way back in 2011 when a group of 25
+        undergraduates dared to do something different. They came up with an
+        idea of forming a team which will build an All-Terrain Vehicle (ATV) to
+        compete in the prestigious competition of BAJA SAE India. A team was
+        formed and the name was derived from the nickname of Capt. Richthofen,
+        the most fearsome pilot from the World Wars who ruled the skies. The era
+        was different but the determination was the same. Keeping this aim in
+        mind, the team toiled through days and nights to turn its dream into
+        reality. The outcome was Albatros 1.0, the first vehicle in the Albatros
+        line-up. It competed in BAJA SAE India 2012. In the very first
+        competition, Albatros 1.0 was ranked 34th nationally.
+      </div>
+
+      <div id="time2_info" class="time-card">
+        <h3>Albatros 2.0</h3>
+        Albatros 2.0 was built the following year to compete in BAJA SAE India
+        2013. The most notable innovation was the Independent leaf spring front
+        end suspension, which also got selected among the top 5 innovations.
+        Overall, the vehicle was ranked 30th out of 125 teams.
+      </div>
+      <div id="time3_info" class="time-card">
+        <h3>Albatros 3.0</h3>
+        Albatros 3.0 marked the season with many first-evers. The vehicle
+        cleared the Hill-climb test in 13 seconds for the first time, cleared
+        manoeuvrability without penalty for the first time and was nominated for
+        CAE(Computer Aided Engineering) awards in Top 5. Winning the ‘Best
+        Engineering Design’ award, Albatros 3.0 stood 8th among 125 teams.
+      </div>
+      <div id="time4_info" class="time-card">
+        <h3>Albatros X</h3>
+        Season 2020-21 marked the 10th year of Team Red Baron. This was one of
+        the most challenging years considering the number of unprecedented
+        situations faced by the team. Even though the entire team was unable to
+        get together for the design and manufacturing of the vehicle, the
+        coordination shown by the team was commendable. Albatros 10.0 being the
+        first four-wheel-drive designed and developed by the team, was a major
+        change from the previous seasons. In view of this decision, various
+        changes were made. In February 2021, the team participated in the Baja
+        SAE International Knowledge Event in which we stood as the 2nd runner up
+        for Cost Event, 5th in Design Event, and attained an overall rank of
+        10th. Following this success, in April 2021, the team appeared for Baja
+        SAE India 2021 static as well as dynamic events which were held on a
+        virtual platform. In this event, we were able to lead the Design
+        standings and be the 2nd best FWD vehicle.
+      </div>
+    </div>
+    <script>
+      const navbarToggle = document.getElementById("navbar-toggle");
+      const navbarLinks = document.querySelector(".navbar-links");
+
+      navbarToggle.addEventListener("click", () => {
+        navbarLinks.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>

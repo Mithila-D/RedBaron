@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images\icon.png" type="image/x-icon" />
+    <title>Team</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+
+        background-color: #f0f0f0;
+
+        height: 100vh;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(to right, #e81801, #5b0b02, #1c0000);
+        padding: 15px 20px;
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        z-index: 1000;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        box-sizing: border-box;
+      }
+
+      .navbar-logo {
+        color: #ffffff;
+        font-size: 1.8em;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        margin-left: 30px;
+      }
+
+      .navbar-links {
+        list-style: none;
+        display: flex;
+        margin: 15px;
+        padding: 0;
+      }
+
+      .navbar-links li {
+        margin: 0 20px;
+      }
+
+      .navbar-links a {
+        color: #ffffff;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        padding: 5px 0;
+        transition: color 0.3s;
+      }
+
+      .navbar-links a:hover {
+        color: #ffcc00;
+      }
+
+      .navbar-links a::after {
+        content: "";
+        display: block;
+        height: 3px;
+        background: #ffcc00;
+        transition: width 0.3s, left 0.3s;
+        width: 0;
+        left: 50%;
+        bottom: -5px;
+        position: absolute;
+      }
+
+      .navbar-links a:hover::after {
+        width: 100%;
+        left: 0;
+      }
+
+      .navbar-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .bar {
+        height: 3px;
+        width: 25px;
+        background-color: #ffffff;
+        margin: 3px 0;
+        transition: all 0.3s;
+      }
+
+      @media (max-width: 768px) {
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          background: linear-gradient(
+            to right,
+            rgba(247, 148, 148, 0.9),
+            rgba(122, 18, 18, 0.9)
+          );
+          border-radius: 8px;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          z-index: 999;
+        }
+
+        .navbar-links.active {
+          display: flex;
+        }
+
+        .navbar-toggle {
+          display: flex;
+        }
+      }
+
+      .gallery {
+        text-align: center;
+        position: relative;
+        width: 40%;
+        height: 300px;
+        overflow: hidden;
+        margin-right: 5%;
+      }
+
+      .slides {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: url("images/bg2.png");
+        color: white;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      .slide:nth-child(1) {
+        animation: show1 10s infinite;
+      }
+      .slide:nth-child(2) {
+        animation: show2 10s infinite;
+      }
+      .slide:nth-child(3) {
+        animation: show3 10s infinite;
+      }
+      .slide:nth-child(4) {
+        animation: show4 10s infinite;
+      }
+      .slide:nth-child(5) {
+        animation: show5 10s infinite;
+      }
+
+      @keyframes show1 {
+        0%,
+        20% {
+          opacity: 1;
+        }
+        25%,
+        100% {
+          opacity: 0;
+        }
+      }
+      @keyframes show2 {
+        0%,
+        20% {
+          opacity: 0;
+        }
+        25%,
+        45% {
+          opacity: 1;
+        }
+        50%,
+        100% {
+          opacity: 0;
+        }
+      }
+      @keyframes show3 {
+        0%,
+        40% {
+          opacity: 0;
+        }
+        45%,
+        65% {
+          opacity: 1;
+        }
+        70%,
+        100% {
+          opacity: 0;
+        }
+      }
+      @keyframes show4 {
+        0%,
+        60% {
+          opacity: 0;
+        }
+        65%,
+        85% {
+          opacity: 1;
+        }
+        90%,
+        100% {
+          opacity: 0;
+        }
+      }
+      @keyframes show5 {
+        0%,
+        80% {
+          opacity: 0;
+        }
+        85%,
+        100% {
+          opacity: 1;
+        }
+      }
+
+      img {
+        width: 200px;
+        height: 80%;
+        border-radius: 15px 13px 0 0;
+        margin-left: 0;
+      }
+
+      .member_name {
+        font-size: 24px;
+        margin: 10px;
+      }
+      .container {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        overflow: hidden;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+
+        background: linear-gradient(
+            rgba(255, 255, 255, 0.5),
+            rgba(255, 255, 255, 0.5)
+          ),
+          url("images/bg3.png");
+      }
+
+      /*
+      .join-us {
+        background-color: #ff4500; 
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 20px;
+        text-align: center;
+        display: inline-block; 
+        text-decoration: none; 
+      }
+
+      .join-us:hover {
+        background-color: #ff6347; 
+      }*/
+      .join-us {
+        padding: 15px 40px;
+        font-size: 18px;
+        font-family: "Roboto", sans-serif;
+        color: #fff;
+        background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+        background-image: url("images/gear.png");
+        background-size: 100px 100px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.4),
+          inset -5px -5px 10px rgba(255, 255, 255, 0.1),
+          inset 5px 5px 10px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .join-us::before {
+        content: "";
+        position: absolute;
+        top: -100%;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          0deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: top 0.5s ease;
+      }
+
+      .join-us:hover::before {
+        top: 100%;
+      }
+
+      .join-us:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.6),
+          inset -5px -5px 15px rgba(255, 255, 255, 0.1),
+          inset 5px 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .join-us:active {
+        transform: translateY(2px);
+        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.4),
+          inset -3px -3px 7px rgba(255, 255, 255, 0.1),
+          inset 3px 3px 7px rgba(0, 0, 0, 0.3);
+      }
+
+      .join-us::after {
+        content: "";
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #ff4500;
+        border-radius: 50%;
+        top: 10px;
+        right: 10px;
+        box-shadow: 0px 0px 3px 1px #ff4500;
+        transition: transform 0.3s ease-in-out;
+      }
+
+      .join-us:hover::after {
+        transform: rotate(45deg);
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgb(0, 0, 0);
+        background-color: rgba(0, 0, 0, 0.4);
+        padding-top: 60px;
+      }
+
+      .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+      }
+
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .modal-text {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-logo">Red Baron</div>
+      <ul class="navbar-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="OurJourney.html">OurJourney</a></li>
+        <li><a href="#">Team</a></li>
+        <li><a href="Blog.html">Blogs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-toggle" id="navbar-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
+    <div class="container">
+      <div class="gallery">
+        <div class="slides">
+          <div class="slide">
+            <img src="images\team_member1.png" alt="Image 1" />
+            <div class="member_name">
+              <b>Mr. Ummid Shaikh: </b> Secretary Professor, Mechanical
+              Engineering
+            </div>
+          </div>
+          <div class="slide">
+            <img src="images\team_member2.png" alt="Image 2" />
+            <div class="member_name">
+              <b>Ishan Ganpule: </b>Managing Director
+            </div>
+          </div>
+          <div class="slide">
+            <img src="images\team_member3.png" alt="Image 3" />
+            <div class="member_name">
+              <b>Ishita Kulat: </b> Social Media Director
+            </div>
+          </div>
+          <div class="slide">
+            <img src="images\team_member4.png" alt="Image 4" />
+            <div class="member_name">
+              <b>Parth Shinde : </b>Electric Powertrain
+            </div>
+          </div>
+          <div class="slide">
+            <img src="images\team_member5.png" alt="Image 5" />
+            <div class="member_name">
+              <b>Tushar Madiwalar : </b>Vehicle Dynamics
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <button class="join-us" id="joinBtn">Join Us</button>
+      </div>
+    </div>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Join Us</h2>
+        <p class="modal-text">Details</p>
+
+        <ul>
+          <li>must be PCCOEian</li>
+          <li>must pass the test</li>
+          <li>75% + attendence</li>
+        </ul>
+      </div>
+    </div>
+
+    <script>
+      const joinBtn = document.getElementById("joinBtn");
+      const modal = document.getElementById("myModal");
+      const closeModal = document.getElementById("closeModal");
+
+      joinBtn.onclick = function () {
+        modal.style.display = "block";
+      };
+
+      closeModal.onclick = function () {
+        modal.style.display = "none";
+      };
+
+      window.onclick = function (event) {
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      const navbarToggle = document.querySelector(".navbar-toggle");
+      const navbarLinks = document.querySelector(".navbar-links");
+
+      navbarToggle.onclick = function () {
+        navbarLinks.classList.toggle("active");
+      };
+    </script>
+  </body>
+</html>

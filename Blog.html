@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="images\icon.png" type="image/x-icon" />
+    <title>Blogs - Red Baron</title>
+    <style>
+      body,
+      h1,
+      h2, 
+      p {
+        margin: 0;
+        padding: 0;
+        font-family: "Arial", sans-serif;
+      }
+
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: linear-gradient(to right, #c0392b, #d35400);
+        padding: 15px 20px;
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        z-index: 1000;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .navbar-logo {
+        color: #ffffff;
+        font-size: 1.8em;
+        font-weight: bold;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+        margin-left: 30px;
+      }
+
+      .navbar-links {
+        list-style: none;
+        display: flex;
+        margin: 15px;
+        padding: 0;
+      }
+
+      .navbar-links li {
+        margin: 0 20px;
+      }
+
+      .navbar-links a {
+        color: #ffffff;
+        text-decoration: none;
+        position: relative;
+        font-weight: 500;
+        padding: 5px 0;
+        transition: color 0.3s;
+      }
+
+      .navbar-links a:hover {
+        color: #ffcc00;
+      }
+
+      .navbar-links a::after {
+        content: "";
+        display: block;
+        height: 3px;
+        background: #ffcc00;
+        transition: width 0.3s, left 0.3s;
+        width: 0;
+        left: 50%;
+        bottom: -5px;
+        position: absolute;
+      }
+
+      .navbar-links a:hover::after {
+        width: 100%;
+        left: 0;
+      }
+
+      .navbar-toggle {
+        display: none;
+        flex-direction: column;
+        cursor: pointer;
+      }
+
+      .bar {
+        height: 3px;
+        width: 25px;
+        background-color: #ffffff;
+        margin: 3px 0;
+        transition: all 0.3s;
+      }
+
+      @media (max-width: 768px) {
+        .navbar-links {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          background: rgba(159, 57, 57, 0.9);
+          border-radius: 8px;
+          top: 60px;
+          left: 0;
+          width: 100%;
+          z-index: 999;
+        }
+
+        .navbar-links.active {
+          display: flex;
+        }
+
+        .navbar-toggle {
+          display: flex;
+        }
+      }
+
+      .slanted-bar {
+        position: fixed;
+        top: 90px;
+        left: 0;
+        width: 100%;
+        height: 40px;
+        background: linear-gradient(to right, #ffa500, red);
+        z-index: 0;
+        transform: skewY(-2.5deg);
+        margin-top: -25px;
+      }
+
+      .main-content {
+        position: relative;
+        top: 110px;
+        width: 60%;
+        max-width: 1200px;
+        margin: auto;
+        background-color: #000;
+        color: #ffffff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease;
+      }
+
+      .main-content:hover {
+        transform: scale(1.02);
+      }
+
+      h1 {
+        font-size: 2.5em;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .drone-image {
+        position: absolute;
+        top: -50px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 600px;
+        height: auto;
+        z-index: 7;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      .services {
+        background-color: #000;
+        color: #ffffff;
+        padding: 30px;
+        margin-top: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        transition: transform 0.3s ease;
+      }
+
+      .services:hover {
+        transform: scale(1.02);
+      }
+
+      .tablet-preview {
+        background-color: #ffffff;
+        color: #000;
+        padding: 30px;
+        margin-top: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+
+      .tablet-preview img {
+        width: 40%;
+        border-radius: 10px;
+        transition: transform 0.3s;
+      }
+
+      .tablet-preview img:hover {
+        transform: scale(1.05);
+      }
+
+      /* .blog-container {
+         display: flex;
+        flex-wrap: wrap; 
+       justify-content: center; 
+        margin-top: 20px;
+      /* } */
+      .blog-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      .blog-card {
+        flex: 1 1 200px;
+        margin: 30px;
+
+        max-width: 300px;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s;
+        padding: 3px;
+        cursor: pointer;
+      }
+
+      .blog-card img {
+        width: 100%;
+        border-radius: 10px 10px 0 0;
+      }
+
+      .blog-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+      }
+      .time {
+        position: relative;
+        font-size: small;
+        color: rgb(97, 95, 95);
+        text-align: left;
+      }
+      .contact {
+        background-color: #000;
+        color: #ffffff;
+        padding: 30px;
+        margin-top: 20px;
+        border-radius: 15px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        text-align: center;
+      }
+
+      .contact input,
+      .contact textarea {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ffa500;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .submit-button {
+        background: linear-gradient(to right, #fa7d3e, rgb(202, 2, 2));
+        color: #ffffff;
+        padding: 8px 15px;
+        border: #6e0404 1px solid;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1em;
+        text-transform: uppercase;
+        transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      .submit-button:hover {
+        background: linear-gradient(to right, #fd9662, #fa7d3e, rgb(254, 3, 3));
+        transform: scale(1.05);
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .submit-button:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.5);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar-logo">Red Baron</div>
+      <ul class="navbar-links">
+        <li><a href="Index.html">Home</a></li>
+        <li><a href="OurJourney.html">OurJourney</a></li>
+        <li><a href="1_Team.html">Team</a></li>
+        <li><a href="#">Blogs</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="navbar-toggle" id="navbar-toggle">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </div>
+    </nav>
+    <br /><br />
+
+    <div class="slanted-bar"></div>
+
+    <div class="main-content">
+      <img
+        src="images\RedBaronWholeTeamPhoto.png"
+        alt="whole team phot"
+        class="drone-image"
+      /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+      <h1>Inspired To Build, Determined To Win.</h1>
+      <div class="services">
+        <h2>Blog</h2>
+        <p>Conquer the Terrain: Insights from Red Baron's Off-Road Experts</p>
+      </div>
+    </div>
+
+    <div class="tablet-preview">
+      <h2>Tablet Preview</h2>
+      <img src="tablet-preview.png" alt="Tablet Preview" />
+    </div>
+    <div class="blog-container">
+      <div class="blog-card">
+        <img src="images\blog1.png" alt="blog Card" /><br />
+        <div><h4>Season Unwrapped: Rising above the challenges.</h4></div>
+      </div>
+
+      <div class="blog-card">
+        <img src="images\blog2.png" alt="blog Card" /><br />
+        <div><h4>A New Journey Begins..</h4></div>
+        <p class="time">August 9, 2022</p>
+      </div>
+
+      <div class="blog-card">
+        <img src="images\blog3.png" alt="blog Card" /><br />
+        <div><h4>A Big Thanks to 2K followers</h4></div>
+      </div>
+    </div>
+    <div class="contact">
+      <h2>Contact Us</h2>
+      <form action="#" method="post">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea placeholder="Your Message" required></textarea>
+        <button type="submit" class="submit-button">Send</button>
+      </form>
+    </div>
+
+    <script>
+      const toggleButton = document.getElementById("navbar-toggle");
+      const navbarLinks = document.querySelector(".navbar-links");
+
+      toggleButton.addEventListener("click", () => {
+        navbarLinks.classList.toggle("active");
+      });
+    </script>
+  </body>
+</html>
